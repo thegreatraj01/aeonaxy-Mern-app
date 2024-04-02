@@ -1,51 +1,59 @@
-import React, { useState } from "react";
+import React from "react";
 import login_image from "../images/login-image.png";
+import { Link } from "react-router-dom";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
+        username: Yup.string().required('Username is required'),
+        email: Yup.string().email('Invalid email address').required('Email is required'),
+        password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+        agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (username) {
-            setErrorMessage("Username has already been taken");
-        } else {
-            setErrorMessage("");
-            // Submit the form data and create an account
-        }
-    };
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            username: '',
+            email: '',
+            password: '',
+            agreeTerms: false,
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            console.log('Form submitted with values:', values);
+            // Here you can submit the form data and create an account
+        },
+    });
 
     return (
-        <div className=" flex max-h-[100vh]">
-            {/* image div start */}
+        <div className="flex max-h-[100vh]">
             <div className="hidden md:block w-[35%]">
                 <img
                     src={login_image}
-                    alt="login-image"
+                    alt="login"
                     className="bg-cover bg-center object-cover w-child h-full"
                 />
             </div>
-            {/* images div ends  */}
 
             <div className="w-[60%] bg-white min-h-screen ">
                 <div className="my-4">
                     <p className="text-end text-gray-500">
                         Already a member?{" "}
-                        <a className="text-blue-500" href="#">
+                        <Link className="text-blue-500" to="/signin">
                             Sign In
-                        </a>
+                        </Link>
                     </p>
                 </div>
 
                 <div className="flex items-center justify-center">
-                    <form onSubmit={handleSubmit} className="w-full max-w-md">
+                    <form onSubmit={formik.handleSubmit} className="w-full max-w-md">
                         <h2 className="text-2xl font-bold mb-4 text-black ">
                             Sign up to Dribbble
                         </h2>
-                        <p className="text-red-500 mb-4">{errorMessage}</p>
+                        <p className="text-red-500 mb-4">{formik.errors.username}</p>
                         <div className="my-3 flex">
                             <div className="w-1/2 mr-2">
                                 <label htmlFor="name" className="block text-gray-700">
@@ -55,9 +63,12 @@ const Login = () => {
                                     placeholder="Jhon"
                                     type="text"
                                     id="name"
-                                    value={name}
+                                    {...formik.getFieldProps('name')}
                                     className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
                                 />
+                                {formik.touched.name && formik.errors.name ? (
+                                    <div className="text-red-500">{formik.errors.name}</div>
+                                ) : null}
                             </div>
                             <div className="w-1/2">
                                 <label htmlFor="username" className="block text-gray-700">
@@ -67,10 +78,12 @@ const Login = () => {
                                     placeholder="@Joneysing"
                                     type="text"
                                     id="username"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    {...formik.getFieldProps('username')}
                                     className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
                                 />
+                                {formik.touched.username && formik.errors.username ? (
+                                    <div className="text-red-500">{formik.errors.username}</div>
+                                ) : null}
                             </div>
                         </div>
 
@@ -82,10 +95,12 @@ const Login = () => {
                                 placeholder="account@refero.design"
                                 type="email"
                                 id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                {...formik.getFieldProps('email')}
                                 className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
                             />
+                            {formik.touched.email && formik.errors.email ? (
+                                <div className="text-red-500">{formik.errors.email}</div>
+                            ) : null}
                         </div>
                         <div className="my-4">
                             <label htmlFor="password" className="block text-gray-700">
@@ -95,18 +110,22 @@ const Login = () => {
                                 placeholder="6+ characters"
                                 type="password"
                                 id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                {...formik.getFieldProps('password')}
                                 className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
                             />
+                            {formik.touched.password && formik.errors.password ? (
+                                <div className="text-red-500">{formik.errors.password}</div>
+                            ) : null}
                         </div>
 
-                        {/* terms and conditions start  */}
                         <div className="mb-4">
                             <div className="flex items-center">
                                 <input
                                     id="agree-terms"
                                     type="checkbox"
+                                    checked={formik.values.agreeTerms}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
                                     className="focus:ring-blue-500 h-6 w-10 text-blue-700 border-gray-300 rounded self-start"
                                 />
                                 <label
@@ -114,51 +133,55 @@ const Login = () => {
                                     className="block text-gray-700 ml-2"
                                 >
                                     Creating an account means you're okay with our
-                                    <a
+                                    <Link
                                         className="text-blue-800 ml-1"
-                                        href="https://policies.google.com/privacy"
+                                        to="/privacy-policy"
                                         target="_blank"
                                     >
                                         Privacy Policy
-                                    </a>
+                                    </Link>
                                     ,
-                                    <a
+                                    <Link
                                         className="text-blue-800 ml-1"
-                                        href="https://policies.google.com/terms"
+                                        to="/terms-of-service"
                                         target="_blank"
                                     >
                                         Terms of Service
-                                    </a>
+                                    </Link>
                                     , and
-                                    <a className="text-blue-800 ml-1" href="#">
+                                    <Link
+                                        className="text-blue-800 ml-1"
+                                        to="/notification-settings"
+                                    >
                                         default Notification Settings
-                                    </a>
+                                    </Link>
                                 </label>
                             </div>
+                            {formik.touched.agreeTerms && formik.errors.agreeTerms ? (
+                                <div className="text-red-500">{formik.errors.agreeTerms}</div>
+                            ) : null}
                         </div>
-                        {/* terms and conditions ends  */}
 
-                        {/* submit button start */}
                         <div className="mt-6">
                             <button
                                 type="submit"
-                                disabled={!username || password.length < 6}
+                                disabled={formik.isSubmitting || !formik.isValid}
                                 className="w-1/2 py-2 px-4 font-medium text-white bg-pink-500 rounded-md hover:bg-pink-600 focus:outline-none"
                             >
-                                Create Account
+                                {formik.isSubmitting ? 'Creating Account...' : 'Create Account'}
                             </button>
                         </div>
-                        {/* submit button ends */}
 
-                        <p className= "mt-5 text-gray-500">
+                        <p className="mt-5 text-gray-500">
                             This site is protected by reCAPTCHA and the Google
-                            <a className="text-blue-500"  >
+                            <Link className="text-blue-500" to="/privacy-policy">
                                 Privacy Policy
-                            </a>
+                            </Link>
                             and
-                            <a className="text-blue-500">
+                            <Link className="text-blue-500" to="/terms-of-service">
                                 Terms of Service
-                            </a>apply.
+                            </Link>
+                            apply.
                         </p>
                     </form>
                 </div>
