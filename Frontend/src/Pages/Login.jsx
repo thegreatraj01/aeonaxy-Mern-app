@@ -9,7 +9,13 @@ const Login = () => {
         name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
         username: Yup.string().required('Username is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
-        password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+        password: Yup.string()
+            .min(6, 'Password must be at least 6 characters')
+            .matches(
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/,
+                'Password must contain at least one number, one uppercase letter, and one special character'
+            )
+            .required('Password is required'),
         agreeTerms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
     });
 
@@ -29,7 +35,7 @@ const Login = () => {
     });
 
     return (
-        <div className="flex max-h-[100vh]">
+        <div className="flex max-h-[100vh] justify-center">
             <div className="hidden md:block w-[35%]">
                 <img
                     src={login_image}
@@ -38,11 +44,11 @@ const Login = () => {
                 />
             </div>
 
-            <div className="w-[60%] bg-white min-h-screen ">
-                <div className="my-4">
-                    <p className="text-end text-gray-500">
+            <div className="md:w-[65%] bg-white min-h-screen ">
+                <div className="my-4 me-5">
+                    <p className="md:text-end text-gray-500">
                         Already a member?{" "}
-                        <Link className="text-blue-500" to="/signin">
+                        <Link className="text-blue-500" to="#">
                             Sign In
                         </Link>
                     </p>
@@ -53,7 +59,7 @@ const Login = () => {
                         <h2 className="text-2xl font-bold mb-4 text-black ">
                             Sign up to Dribbble
                         </h2>
-                        <p className="text-red-500 mb-4">{formik.errors.username}</p>
+
                         <div className="my-3 flex">
                             <div className="w-1/2 mr-2">
                                 <label htmlFor="name" className="block text-gray-700">
@@ -135,23 +141,23 @@ const Login = () => {
                                     Creating an account means you're okay with our
                                     <Link
                                         className="text-blue-800 ml-1"
-                                        to="/privacy-policy"
-                                        target="_blank"
+                                        to="#"
+
                                     >
                                         Privacy Policy
                                     </Link>
                                     ,
                                     <Link
                                         className="text-blue-800 ml-1"
-                                        to="/terms-of-service"
-                                        target="_blank"
+                                        to="#"
+
                                     >
                                         Terms of Service
                                     </Link>
                                     , and
                                     <Link
                                         className="text-blue-800 ml-1"
-                                        to="/notification-settings"
+                                        to="#"
                                     >
                                         default Notification Settings
                                     </Link>
@@ -174,11 +180,11 @@ const Login = () => {
 
                         <p className="mt-5 text-gray-500">
                             This site is protected by reCAPTCHA and the Google
-                            <Link className="text-blue-500" to="/privacy-policy">
+                            <Link className="text-blue-500" to="#">
                                 Privacy Policy
                             </Link>
                             and
-                            <Link className="text-blue-500" to="/terms-of-service">
+                            <Link className="text-blue-500" to="#">
                                 Terms of Service
                             </Link>
                             apply.
