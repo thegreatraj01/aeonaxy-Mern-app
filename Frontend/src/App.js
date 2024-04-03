@@ -1,17 +1,20 @@
+import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import { Routes, Route } from 'react-router-dom';
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Profile from "./Pages/Profile";
+
 
 
 function App() {
   return (
     <div>
-      <Header></Header>
       <Routes>
+        <Route path="/" exact element={<Home />}/>
         <Route path="/login" element={<Login />} />
+        <Route path='/profile/:id' element={<Profile/>} />
+        <Route path='/*' element={<h1>page not found</h1>} />
+
       </Routes>
-      <Footer></Footer>
     </div>
 
   );

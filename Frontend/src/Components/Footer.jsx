@@ -62,7 +62,7 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <hr className="my-3 border-gray-200 sm:mx-auto lg:my-8" />
+                <hr className="my-3 border-gray-200 sm:mx-auto lg:my-3" />
 
                 {/* copyright section  */}
                 <div className="sm:flex sm:items-center sm:justify-between ">
