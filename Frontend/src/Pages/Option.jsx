@@ -50,7 +50,7 @@ const Option = () => {
                     <div className="bg-white rounded-lg shadow-md p-4 border min-h-[43vh] flex flex-col flex-grow-2 relative">
                         <div className={`flex flex-col items-center justify-center`}>
                             <div className={`text-center ${selectedOption === 'hire' ? "-translate-y-14" : ""}`}>
-                                <img className="h-36 mx-auto" src={hire_img} alt="hiring image" />
+                                <img className="h-36 mx-auto" src={hire_img} alt="hiring" />
                                 <p className="text-gray-800 font-semibold text-center">
                                     I'm looking to hire a designer
                                 </p>
@@ -67,7 +67,7 @@ const Option = () => {
                     <div className="bg-white rounded-lg shadow-md p-4 border min-h-[43vh] flex flex-col flex-grow-2 relative">
                         <div className={`flex flex-col items-center justify-center`}>
                             <div className={`text-center ${selectedOption === 'inspire' ? "-translate-y-14" : ""}`}>
-                                <img className="h-36 mx-auto" src={inspire_img} alt="inspiration image" />
+                                <img className="h-36 mx-auto" src={inspire_img} alt="inspiration" />
                                 <p className="text-gray-800 font-semibold text-center">
                                     I'm looking for design inspiration
                                 </p>
