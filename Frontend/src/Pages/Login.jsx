@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import login_image from "../images/login-image.png";
 import { Link } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { url } from "../config";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+    const [passwordtoggle, setpasswordtoggle] = useState(false);
+    const navigate = useNavigate();
+
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
         username: Yup.string().required('Username is required'),
@@ -28,9 +35,20 @@ const Login = () => {
             agreeTerms: false,
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            console.log('Form submitted with values:', values);
-            // Here you can submit the form data and create an account
+        onSubmit: async (values) => {
+            try {
+                const response = await axios.post(`${url}/register`, values);
+                console.log(response);
+                if (response.status === 201) {
+                    formik.resetForm();
+                    navigate('/profile');
+                    alert(response.data.message)
+                    localStorage.setItem('login',true);
+                }
+            } catch (error) {
+                console.log(error);
+                alert(error.response.data.message);
+            }
         },
     });
 
@@ -108,17 +126,23 @@ const Login = () => {
                                 <div className="text-red-500">{formik.errors.email}</div>
                             ) : null}
                         </div>
-                        <div className="my-4">
+                        <div className="my-4 relative">
                             <label htmlFor="password" className="block text-gray-700">
                                 Password
                             </label>
-                            <input
-                                placeholder="6+ characters"
-                                type="password"
-                                id="password"
-                                {...formik.getFieldProps('password')}
-                                className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
-                            />
+                            <div className=" relative">
+                                <input
+                                    placeholder="6+ characters"
+                                    type={passwordtoggle === false ? "password" : 'text'}
+                                    id="password"
+                                    {...formik.getFieldProps('password')}
+                                    className="px-4 py-2 border-gray-200 rounded-md bg-gray-100 text-gray-500 w-full"
+                                />
+                                <p className="absolute right-2 bottom-2" onClick={() => setpasswordtoggle(!passwordtoggle)}>
+                                    {passwordtoggle === false ? 'show' : 'hide'}
+                                </p>
+                            </div>
+
                             {formik.touched.password && formik.errors.password ? (
                                 <div className="text-red-500">{formik.errors.password}</div>
                             ) : null}
@@ -130,19 +154,20 @@ const Login = () => {
                                     id="agree-terms"
                                     type="checkbox"
                                     checked={formik.values.agreeTerms}
-                                    onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className="focus:ring-blue-500 h-6 w-10 text-blue-700 border-gray-300 rounded self-start"
+                                    onChange={() => formik.setFieldValue('agreeTerms', !formik.values.agreeTerms)}
+                                    className="focus:ring-blue-500 h-6 w-6 text-blue-700 border-gray-300 rounded self-start"
                                 />
+
+
                                 <label
                                     htmlFor="agree-terms"
-                                    className="block text-gray-700 ml-2"
+                                    className="block text-gray-700 ml-2 cursor-pointer" // Added cursor-pointer for better UX
                                 >
                                     Creating an account means you're okay with our
                                     <Link
                                         className="text-blue-800 ml-1"
                                         to="#"
-
                                     >
                                         Privacy Policy
                                     </Link>
@@ -150,7 +175,6 @@ const Login = () => {
                                     <Link
                                         className="text-blue-800 ml-1"
                                         to="#"
-
                                     >
                                         Terms of Service
                                     </Link>
