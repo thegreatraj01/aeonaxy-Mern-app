@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -25,10 +31,10 @@ const Header = () => {
 
           <div className=" gap-2  flex items-center lg:order-2">
             {/* search bar  */}
-            <div class="relative">
-              <input type="text" class="border border-gray-300 rounded-md px-2 py-1 w-32" placeholder="Search..." />
-              <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
+            <div className="relative">
+              <input type="text" className="border border-gray-300 rounded-md px-2 py-1 w-32" placeholder="Search..." />
+              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
                   <path d="M337.509 305.372h-17.501l-6.571-5.486c20.791-25.232 33.922-57.054 33.922-93.257C347.358 127.632 283.896 64 205.135 64 127.452 64 64 127.632 64 206.629s63.452 142.628 142.225 142.628c35.011 0 67.831-13.167 92.991-34.008l6.561 5.487v17.551L415.18 448 448 415.086 337.509 305.372zm-131.284 0c-54.702 0-98.463-43.887-98.463-98.743 0-54.858 43.761-98.742 98.463-98.742 54.7 0 98.462 43.884 98.462 98.742 0 54.856-43.762 98.743-98.462 98.743z"></path>
                 </svg>
               </span>
@@ -49,9 +55,9 @@ const Header = () => {
 
 
             {/* image logo started */}
-            
+
             <div className="md:hidden lg:block bg-slate-300 w-8 h-8 rounded-full flex justify-center items-center">
-              <img className="w-full h-full object-cover rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHcaPJwcTviSUGQftSBOp7uGs9YKr9XdQpmgezNPgomr9-weig77TlzfwweRTNDZY0EPg&usqp=CAU" alt="profile pic" />
+              <img className="w-full h-full object-cover rounded-full" src={user?.profilePic || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHcaPJwcTviSUGQftSBOp7uGs9YKr9XdQpmgezNPgomr9-weig77TlzfwweRTNDZY0EPg&usqp=CAU"} alt="profile pic" />
             </div>
 
 

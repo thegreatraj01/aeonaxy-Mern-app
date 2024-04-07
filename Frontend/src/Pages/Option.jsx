@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import hire_img from '../images/hire.png';
 import designer_img from '../images/designer.png';
 import inspire_img from '../images/inspire.png';
+import Mycontext from "../contextApi/Mycontext";
 
 const Option = () => {
-    const [selectedOption, setSelectedOption] = useState(null);
+    const { profileType, setprofileType ,hanldeFormSubmit } = useContext(Mycontext);
+    // const [profileType, setprofileType] = useState(null);
 
     const handleRadioChange = (option) => {
-        if (selectedOption === option) {
-            setSelectedOption(null); // Unselect if already selected
+        if (profileType === option) {
+            setprofileType(null); // Unselect if already selected
         } else {
-            setSelectedOption(option);
+            setprofileType(option);
         }
     };
 
@@ -21,7 +23,7 @@ const Option = () => {
                 <h1 className="font-semibold text-2xl ps-2 pt-2 text-pink-500 font-neue" style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.7)' }}>
                     <Link to="/">Dribbble</Link>
                 </h1>
-                <Link className="ms-5 mt-3 h-8 w-8 bg-slate-100 rounded-md text-center">{"<"}</Link>
+                <Link to='/profile' className="ms-5 mt-3 h-8 w-8 bg-slate-100 rounded-md text-center">{"<"}</Link>
             </div>
 
             <div className="w-2/3 mt-6 mx-auto">
@@ -32,58 +34,58 @@ const Option = () => {
 
                     <div className="bg-white rounded-lg shadow-md p-4 border min-h-[43vh] flex flex-col flex-grow-2 relative">
                         <div className={`flex flex-col items-center justify-center`}>
-                            <div className={`text-center ${selectedOption === 'designer' ? "-translate-y-14" : ""}`}>
+                            <div className={`text-center ${profileType === 'designer' ? "-translate-y-14" : ""}`}>
                                 <img className="h-36 mx-auto" src={designer_img} alt="looding for designer" />
                                 <p className="text-gray-800 font-semibold text-center">
                                     I'm a designer looking to share my work
                                 </p>
-                                <p className={selectedOption === 'designer' ? "" : "hidden"}>
+                                <p className={profileType === 'designer' ? "" : "hidden"}>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                 </p>
                             </div>
                             <div className="flex items-center justify-center absolute bottom-4 left-0 right-0">
-                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('designer')} checked={selectedOption === 'designer'} />
+                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('designer')} checked={profileType === 'designer'} />
                             </div>
                         </div>
                     </div>
 
                     <div className="bg-white rounded-lg shadow-md p-4 border min-h-[43vh] flex flex-col flex-grow-2 relative">
                         <div className={`flex flex-col items-center justify-center`}>
-                            <div className={`text-center ${selectedOption === 'hire' ? "-translate-y-14" : ""}`}>
+                            <div className={`text-center ${profileType === 'employer' ? "-translate-y-14" : ""}`}>
                                 <img className="h-36 mx-auto" src={hire_img} alt="hiring" />
                                 <p className="text-gray-800 font-semibold text-center">
                                     I'm looking to hire a designer
                                 </p>
-                                <p className={selectedOption === 'hire' ? "" : "hidden"}>
+                                <p className={profileType === 'employer' ? "" : "hidden"}>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                 </p>
                             </div>
                             <div className="flex items-center justify-center absolute bottom-4 left-0 right-0">
-                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('hire')} checked={selectedOption === 'hire'} />
+                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('employer')} checked={profileType === 'employer'} />
                             </div>
                         </div>
                     </div>
 
                     <div className="bg-white rounded-lg shadow-md p-4 border min-h-[43vh] flex flex-col flex-grow-2 relative">
                         <div className={`flex flex-col items-center justify-center`}>
-                            <div className={`text-center ${selectedOption === 'inspire' ? "-translate-y-14" : ""}`}>
+                            <div className={`text-center ${profileType === 'learner' ? "-translate-y-14" : ""}`}>
                                 <img className="h-36 mx-auto" src={inspire_img} alt="inspiration" />
                                 <p className="text-gray-800 font-semibold text-center">
                                     I'm looking for design inspiration
                                 </p>
-                                <p className={selectedOption === 'inspire' ? "" : "hidden"}>
+                                <p className={profileType === 'learner' ? "" : "hidden"}>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                                 </p>
                             </div>
                             <div className="flex items-center justify-center absolute bottom-4 left-0 right-0">
-                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('inspire')} checked={selectedOption === 'inspire'} />
+                                <input name="option" type="radio" className="rounded-full form-checkbox text-blue-500 h-5 w-5" onChange={() => handleRadioChange('learner')} checked={profileType === 'learner'} />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex justify-center mt-8">
-                    <button className="bg-pink-500 text-white px-6 py-3 rounded-md font-semibold">Finish</button>
+                    <button onClick={hanldeFormSubmit} className="bg-pink-500 text-white px-6 py-3 rounded-md font-semibold"><Link to='/profile/verify'>Finish</Link></button>
                 </div>
             </div>
         </div>

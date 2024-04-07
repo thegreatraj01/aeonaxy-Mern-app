@@ -4,9 +4,11 @@ import Profile from "./Pages/Profile";
 import Option from "./Pages/Option";
 import EmailVerify from "./Pages/EmailVerify";
 import MyState from "./contextApi/MyState.jsx";
+import NotFoundPage from "./Pages/Nopage.jsx";
 
 function App() {
   const logedin = localStorage.getItem("login");
+
   return (
     <div>
       <MyState>
@@ -16,7 +18,9 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/option' element={<Option />} />
           <Route path='/profile/verify' element={<EmailVerify />} />
-          <Route path='/*' element={<h1>page not found</h1>} />
+          {logedin && <Route path='/' element={<EmailVerify />} />}
+          <Route path='/*' element={<NotFoundPage />} />
+
         </Routes>
       </MyState>
     </div>

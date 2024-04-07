@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
-        
+
         const existingUser2 = await User.findOne({ username: username });
         if (existingUser2) {
             return res.status(400).json({ message: 'Username already taken try something else ' });
@@ -98,12 +98,31 @@ const updateProfile = async (req, res) => {
 
 };
 
+const reSendEmail = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        console.log(req.body);
+        if(!userId)return res.status(404).send('Send userId');
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const token = generateToken(user._id);
+        sendEmail(user.email, token);
+        res.status(200).send("Email sent");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error: ' + error.message);
+    }
+};
+
 const verifyemail = async (req, res) => {
     try {
         const { token } = req.query;
         if (!token) return res.status(401).send('Token is required');
 
-        const userId = verifyToken(token); // await verifyToken since it's an asynchronous function
+        const userId = verifyToken(token); 
         if (userId === null) return res.status(401).send('Invalid token Please try again');
 
         // Assuming you're using Mongoose for MongoDB interaction
@@ -116,4 +135,4 @@ const verifyemail = async (req, res) => {
 }
 
 
-export { registerUser, updateProfile, verifyemail };
+export { registerUser, updateProfile, verifyemail, reSendEmail };

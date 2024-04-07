@@ -35,15 +35,18 @@ const Login = () => {
             agreeTerms: false,
         },
         validationSchema: validationSchema,
+
         onSubmit: async (values) => {
             try {
+                // alert("hi")
                 const response = await axios.post(`${url}/register`, values);
-                console.log(response);
+                // console.log(response);
                 if (response.status === 201) {
+                    localStorage.setItem('login', true);
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
                     formik.resetForm();
                     navigate('/profile');
                     alert(response.data.message)
-                    localStorage.setItem('login',true);
                 }
             } catch (error) {
                 console.log(error);
@@ -53,7 +56,7 @@ const Login = () => {
     });
 
     return (
-        <div className="flex max-h-[100vh] justify-center">
+        <div className="p-4 lg:p-0 flex max-h-[100vh] justify-center">
             <div className="hidden md:block w-[35%]">
                 <img
                     src={login_image}
