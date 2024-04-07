@@ -21,6 +21,26 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
+app.get('/', (req, res) => {
+    res.send('Welcome');
+});
+
+async function makeApiCall() {
+    try {
+        const response = await fetch("https://aeonaxy-mern-app.onrender.com/");
+        if (response.ok) {
+            console.log("API call successful");
+        } else {
+            throw new Error(`API call failed with status ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error making API call:", error.message);
+    }
+}
+
+const interval = 10 * 60 * 1000; // 10 minutes in milliseconds
+setInterval(makeApiCall, interval);
+
 // Start the server
 app.listen(PORT, async () => {
     connect(); // Assuming this function establishes MongoDB connection

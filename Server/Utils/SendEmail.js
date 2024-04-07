@@ -17,7 +17,9 @@ const sendEmail = async (email, token) => {
         from: process.env.NODEMAILER_USER,
         to: email,
         subject: 'Verify your email', // Subject line
-        html: `<a href="${verificationLink}">Click here to verify your email</a>` 
+        html: `<h1>Thaku you </h1>
+        <h2>Verify your email </h2>
+        <a href="${verificationLink}">Click here to verify your email</a>`
     };
 
     try {
