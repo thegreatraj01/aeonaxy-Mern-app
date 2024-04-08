@@ -23,7 +23,9 @@ const MyState = ({ children }) => {
         try {
             const response = await axios.put(`${url}/updateprofile`, data);
             if (response.status === 200) {
-                alert(`We have sent you an email on ${user.email} please verify your email`);
+                // console.log(response);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                alert(`We have sent you an email on ${response.data.user.email} please verify your email`);
             }
         } catch (error) {
             console.log(error);

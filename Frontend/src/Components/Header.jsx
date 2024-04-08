@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [logedin, setlogedin] = useState(null);
 
   useEffect(() => {
+    setlogedin(localStorage.getItem('login'))
     const storedUser = JSON.parse(localStorage.getItem('user'));
     setUser(storedUser);
   }, []);
@@ -63,12 +65,13 @@ const Header = () => {
 
             {/* image logo ends */}
 
-            <Link
+            {logedin && <Link
+              onClick={() => { localStorage.removeItem('login'); localStorage.removeItem('user'); }}
               to='/login'
               className=" text-gray-800 bg-pink-500 hover:bg-pink-300 focus:ring-4 focus:ring-gray-300 font-semibold rounded-lg text-md px-4 lg:px-4 py-2 lg:py-1 mr-2 focus:outline-none"
             >
-              Log in
-            </Link>
+              LogOut
+            </Link>}
 
             <button
               onClick={toggleMobileMenu}
