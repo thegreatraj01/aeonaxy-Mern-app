@@ -59,7 +59,8 @@ const Header = () => {
             {/* image logo started */}
 
             <div className="md:hidden lg:block bg-slate-300 w-8 h-8 rounded-full flex justify-center items-center">
-              <img className="w-full h-full object-cover rounded-full" src={user?.profilePic || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHcaPJwcTviSUGQftSBOp7uGs9YKr9XdQpmgezNPgomr9-weig77TlzfwweRTNDZY0EPg&usqp=CAU"} alt="profile pic" />
+              <Link to='/profile'>
+                <img className="w-full h-full object-cover rounded-full" src={user?.profilePic || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHcaPJwcTviSUGQftSBOp7uGs9YKr9XdQpmgezNPgomr9-weig77TlzfwweRTNDZY0EPg&usqp=CAU"} alt="profile pic" /></Link>
             </div>
 
 

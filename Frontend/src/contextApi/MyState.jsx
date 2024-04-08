@@ -29,6 +29,8 @@ const MyState = ({ children }) => {
             }
         } catch (error) {
             console.log(error);
+            alert(`server error please try again`);
+
         }
     };
 

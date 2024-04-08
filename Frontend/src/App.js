@@ -5,9 +5,14 @@ import Option from "./Pages/Option";
 import EmailVerify from "./Pages/EmailVerify";
 import MyState from "./contextApi/MyState.jsx";
 import NotFoundPage from "./Pages/Nopage.jsx";
+import { useEffect, useState } from "react";
 
 function App() {
-  const logedin = localStorage.getItem("login");
+
+  const [logedin, setlogedin] = useState(false);
+  useEffect(() => {
+    setlogedin(localStorage.getItem("login"))
+  },[logedin]);
 
   return (
     <div>
